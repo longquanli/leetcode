@@ -1,0 +1,16 @@
+A 3 x 3 magic square is a 3 x 3 grid filled with distinct numbers from 1 to 9 such that each row, column, and both diagonals all have the same sum.
+Given an grid of integers, how many 3 x 3 "magic square" subgrids are there?  (Each subgrid is contiguous).
+
+def numMagicSquaresInside(self, grid):
+    row = len(grid)
+    col = len(grid[0])
+    def check(a,b,c,d,e,f,g,h,i):
+        return (sorted([a,b,c,d,e,f,g,h,i]) == range(1, 10) and (a+b+c==e+d+f==g+h+i==a+d+g==b+e+h==c+f+i==a+e+i==c+e+g==15))
+    count = 0
+    for r in range(row - 2):
+        for c in range(col - 2):
+            if check(grid[r][c], grid[r][c+1], grid[r][c+2],
+                         grid[r+1][c], grid[r+1][c+1], grid[r+1][c+2],
+                         grid[r+2][c], grid[r+2][c+1], grid[r+2][c+2]):
+                count += 1
+    return count
