@@ -1,0 +1,37 @@
+Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has the following properties:
+Integers in each row are sorted in ascending from left to right.
+Integers in each column are sorted in ascending from top to bottom.
+
+Time O(m+n) Space O(1)
+class Solution(object):
+    def searchMatrix(self, matrix, target):
+        """
+        :type matrix: List[List[int]]
+        :type target: int
+        :rtype: bool
+        """
+        if matrix == None or not matrix:
+            return False
+        startrow = len(matrix) - 1
+        startcol = 0
+        while startrow >= 0 and startcol < len(matrix[0]):
+            if matrix[startrow][startcol] == target:
+                return True
+            elif matrix[startrow][startcol] > target:
+                startrow -= 1
+            else:
+                startcol += 1
+        return False
+Version II
+time O(mlgn)
+from bisect import bisect_left
+class Solution(object):
+    def searchMatrix(self, g, x):
+        '''T(m, n) = O(m * log n) and S(m, n) = O(1)'''
+        if not g or not g[0]:
+            return False
+        for row in g:
+            j = bisect_left(row, x)
+            if j < len(row) and row[j] == x:
+                return True
+        return False
