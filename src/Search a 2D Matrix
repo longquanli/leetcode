@@ -1,0 +1,24 @@
+Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has the following properties:
+.Integers in each row are sorted from left to right.
+.The first integer of each row is greater than the last integer of the previous row.
+
+class Solution(object):
+    def searchMatrix(self, matrix, target):
+        """
+        :type matrix: List[List[int]]
+        :type target: int
+        :rtype: bool
+        """
+        if matrix == None or len(matrix) == 0 or len(matrix[0]) == 0:
+            return False
+        start = 0
+        end = len(matrix) * len(matrix[0]) - 1
+        while start <= end:
+            mid = start + (end - start) / 2
+            if matrix[mid / len(matrix[0])][mid % len(matrix[0])] == target:
+                return True
+            elif matrix[mid / len(matrix[0])][mid % len(matrix[0])] > target:
+                end = mid - 1
+            else:
+                start = mid + 1
+        return False
