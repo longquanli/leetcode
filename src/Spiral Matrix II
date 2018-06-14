@@ -1,0 +1,32 @@
+Given a positive integer n, generate a square matrix filled with elements from 1 to n2 in spiral order.
+
+class Solution(object):
+    def generateMatrix(self, n):
+        """
+        :type n: int
+        :rtype: List[List[int]]
+        """
+        ans = [[0] * n for _ in range(n)]
+        value = 1
+        rowbegin, rowend, colbegin, colend = 0, n - 1, 0, n - 1
+        while rowbegin <= rowend:
+            for i in range(colbegin, colend + 1):
+                ans[rowbegin][i] = value
+                value += 1
+            rowbegin += 1
+            if rowbegin <= rowend:
+                for i in range(rowbegin, rowend + 1):
+                    ans[i][colend] = value
+                    value += 1
+            colend -= 1
+            if colbegin <= colend:
+                for i in range(colend, colbegin - 1, -1):
+                    ans[rowend][i] = value
+                    value += 1
+            rowend -= 1
+            if rowend >= rowbegin:
+                for i in range(rowend, rowbegin - 1, -1):
+                    ans[i][colbegin] = value
+                    value += 1
+            colbegin += 1
+        return ans
