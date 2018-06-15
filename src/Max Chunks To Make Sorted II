@@ -1,0 +1,28 @@
+Given an array arr of integers (not necessarily distinct), we split the array into some number of "chunks" (partitions), and individually sort each chunk.  After concatenating them, the result equals the sorted array.
+What is the most number of chunks we could have made?
+
+#Hard, need more time to think ***
+Time O(nlgn) Space O(n)
+class Solution(object):
+    def maxChunksToSorted(self, arr):
+        """
+        :type arr: List[int]
+        :rtype: int
+        """
+        nonezero = 0
+        ans = 0
+        count = collections.defaultdict(int)
+        for X, Y in zip(arr, sorted(arr)):
+            count[X] += 1
+            if count[X] == 0:
+                nonezero -= 1
+            if count[X] == 1:
+                nonezero += 1
+            count[Y] -= 1
+            if count[Y] == 0:
+                nonezero -= 1
+            if count[Y] == -1:
+                nonezero += 1
+            if nonezero == 0:
+                ans += 1
+        return ans
