@@ -1,0 +1,22 @@
+Given an array nums and a target value k, find the maximum length of a subarray that sums to k. If there isn't one, return 0 instead.
+
+map is used to store the previous sum value, if it has, skip that value because we want the longest one as possible.
+Time O(n) Space O(n)
+class Solution(object):
+    def maxSubArrayLen(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        ans = 0
+        presum = 0
+        summap = collections.defaultdict(int)
+        summap[0] = -1
+        for index, value in enumerate(nums):
+            presum += value
+            if presum - k in summap:
+                ans = max(ans, index - summap[presum - k])
+            if presum not in summap:
+                summap[presum] = index
+        return ans
