@@ -1,0 +1,20 @@
+Your are given an array of positive integers nums.
+Count and print the number of (contiguous) subarrays where the product of all the elements in the subarray is less than k.
+
+class Solution(object):
+    def numSubarrayProductLessThanK(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        left = 0
+        ans = 0
+        curproduct = 1
+        for index, value in enumerate(nums):
+            curproduct *= value
+            while left < len(nums) - 1 and curproduct >= k:
+                curproduct /= nums[left]
+                left += 1
+            ans += index - left + 1
+        return ans
