@@ -1,0 +1,64 @@
+Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] 
+(si < ei), find the minimum number of conference rooms required.
+
+# Time O(nlgn) O(N)
+class Solution(object):
+    def minMeetingRooms(self, intervals):
+        """
+        :type intervals: List[Interval]
+        :rtype: int
+        """
+        if not intervals:
+            return 0
+        startArr = [0] * len(intervals)
+        endArr = [0] * len(intervals)
+        for i in range(len(intervals)):
+            startArr[i] = intervals[i].start
+            endArr[i] = intervals[i].end
+        startArr.sort()
+        endArr.sort()
+        end = 0
+        count = 1
+        for i in range(1, len(startArr)):
+            if startArr[i] >= endArr[end]:
+                end += 1
+            else:
+                count += 1
+        return count
+#Version II Java Time(nlgn) Space O(n) still do not know who to override priorityqueue in Python
+public int minMeetingRooms(Interval[] intervals) {
+    if (intervals == null || intervals.length == 0)
+        return 0;
+        
+    // Sort the intervals by start time
+    Arrays.sort(intervals, new Comparator<Interval>() {
+        public int compare(Interval a, Interval b) { return a.start - b.start; }
+    });
+    
+    // Use a min heap to track the minimum end time of merged intervals
+    PriorityQueue<Interval> heap = new PriorityQueue<Interval>(intervals.length, new Comparator<Interval>() {
+        public int compare(Interval a, Interval b) { return a.end - b.end; }
+    });
+    
+    // start with the first meeting, put it to a meeting room
+    heap.offer(intervals[0]);
+    
+    for (int i = 1; i < intervals.length; i++) {
+        // get the meeting room that finishes earliest
+        Interval interval = heap.poll();
+        
+        if (intervals[i].start >= interval.end) {
+            // if the current meeting starts right after 
+            // there's no need for a new room, merge the interval
+            interval.end = intervals[i].end;
+        } else {
+            // otherwise, this meeting needs a new room
+            heap.offer(intervals[i]);
+        }
+        
+        // don't forget to put the meeting room back
+        heap.offer(interval);
+    }
+    
+    return heap.size();
+}
