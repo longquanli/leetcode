@@ -1,0 +1,30 @@
+Given n nodes labeled from 0 to n-1 and a list of undirected edges (each edge is a pair of nodes), 
+write a function to check whether these edges make up a valid tree.
+
+#Time O(n) Space O(n)
+import Queue
+class Solution(object):
+    def validTree(self, n, edges):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :rtype: bool
+        """
+        if n < 1:
+            return False
+        que = Queue.Queue()
+        memo = set()
+        dic = collections.defaultdict(set)
+        for tmp in edges:
+            dic[tmp[0]].add(tmp[1])
+            dic[tmp[1]].add(tmp[0])
+        que.put(0)
+        while not que.empty():
+            tmp = que.get()
+            if tmp in memo:
+                return False
+            for num in dic[tmp]:
+                dic[num].remove(tmp)
+                que.put(num)
+            memo.add(tmp)
+        return len(memo) == n
