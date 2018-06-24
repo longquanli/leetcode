@@ -1,0 +1,26 @@
+#Time(O(n)) Space(O(1))
+
+class Solution(object):
+    def minSubArrayLen(self, s, nums):
+        """
+        :type s: int
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return 0
+        i = 0
+        j = 1
+        ans = sys.maxint
+        curSum = nums[0]
+        while j < len(nums):
+            while j < len(nums) and curSum < s:
+                curSum += nums[j]
+                j += 1
+            while curSum >= s:
+                ans = min(ans, j - i)
+                curSum -= nums[i]
+                i += 1
+        if ans == sys.maxint:
+            return 0
+        return ans
