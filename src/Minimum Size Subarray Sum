@@ -1,5 +1,9 @@
-#Time(O(n)) Space(O(1))
+Given an array of n positive integers and a positive integer s, 
+find the minimal length of a contiguous subarray of which the sum ≥ s. 
+If there isn't one, return 0 instead.
 
+#Version I
+#Time(O(n)) Space(O(1))
 class Solution(object):
     def minSubArrayLen(self, s, nums):
         """
@@ -7,20 +11,48 @@ class Solution(object):
         :type nums: List[int]
         :rtype: int
         """
+        left = 0
+        ans = sys.maxint
+        curSum = 0
+        for i in range(len(nums)):
+            curSum += nums[i]
+            while curSum >= s:
+                ans = min(ans, i - left + 1)
+                curSum -= nums[left]
+                left += 1
+        if ans == sys.maxint:
+            return 0
+        return ans
+     
+#Version II Time(nlgn) Space O(n)
+class Solution(object):
+    def minSubArrayLen(self, s, nums):
+        """
+        :type s: int
+        :type nums: List[int]
+        :rtype: int
+        """
+        def binary_search(start, end, target, sumArr):
+            while start <= end:
+                mid = start + (end - start) // 2
+                if target <= sumArr[mid]:
+                    end = mid - 1
+                else:
+                    start = mid + 1
+            return start
         if not nums:
             return 0
-        i = 0
-        j = 1
+        sumArr = [0] * (len(nums))
+        sumArr[0] = nums[0]
         ans = sys.maxint
-        curSum = nums[0]
-        while j < len(nums):
-            while j < len(nums) and curSum < s:
-                curSum += nums[j]
-                j += 1
-            while curSum >= s:
-                ans = min(ans, j - i)
-                curSum -= nums[i]
-                i += 1
+        for i in range(1, len(nums)):
+            sumArr[i] += sumArr[i - 1] + nums[i]
+        print(sumArr)
+        for i in range(0, len(nums)):
+            target = sumArr[i] + s - nums[i]
+            index = binary_search(i, len(nums) - 1, target, sumArr)
+            if index < len(nums):
+                ans = min(ans, index - i + 1)
         if ans == sys.maxint:
             return 0
         return ans
