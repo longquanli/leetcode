@@ -1,0 +1,19 @@
+#Given a set of distinct integers, nums, return all possible subsets (the power set).
+#Time 2^n Space(1), must use copy.deepcopy(), if target is integer, string, tuple, it doesn't matter.
+
+class Solution:
+    def helper(self, pos, tmp_ans, ans, nums):
+        ans.append(copy.deepcopy(tmp_ans))
+        for i in range(pos, len(nums)):
+            tmp_ans.append(nums[i])
+            self.helper(i + 1, tmp_ans, ans, nums)
+            tmp_ans.pop()
+    def subsets(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        ans = []
+        tmp_ans = []
+        self.helper(0, tmp_ans, ans, nums)
+        return ans
