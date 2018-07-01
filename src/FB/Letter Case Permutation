@@ -1,0 +1,51 @@
+Given a string S, we can transform every letter individually to be lowercase or uppercase to create another string.  
+Return a list of all possible strings we could create.
+#Version I Slow 2^n
+class Solution:
+    def letterCasePermutation(self, S):
+        def helper(ans, tmp_list, pos, S):
+            if len(tmp_list) == len(S):
+                string = ''.join(tmp_list)
+                ans.append(copy.deepcopy(string))
+            else:
+                for i in range(pos, len(S)):
+                    if S[i].isdigit():
+                        tmp_list.append(S[i])
+                        helper(ans, tmp_list, i + 1, S)
+                        tmp_list.pop()
+                     else:
+                        tmp_list.append(S[i].lower())
+                        helper(ans, tmp_list, i + 1, S)
+                        tmp_list.pop()
+                        tmp_list.append(S[i].upper())
+                        helper(ans, tmp_list, i + 1, S)
+                        tmp_list.pop()
+     ans = []
+     helper(ans, [], 0, S)
+     return ans
+#Version II delete many branches
+class Solution:
+    def letterCasePermutation(self, S):
+        """
+        :type S: str
+        :rtype: List[str]
+        """
+        ans = []
+        def helper(ans, tmp_list, pos, S):
+            if len(tmp_list) == len(S):
+                string = ''.join(tmp_list)
+                ans.append(string)
+            else:
+                if S[pos].isdigit():
+                    tmp_list.append(S[pos])
+                    helper(ans, tmp_list, pos + 1, S)
+                    tmp_list.pop()
+                else:
+                    tmp_list.append(S[pos].upper())
+                    helper(ans, tmp_list, pos + 1, S)
+                    tmp_list.pop()
+                    tmp_list.append(S[pos].lower())
+                    helper(ans, tmp_list, pos + 1, S)
+                    tmp_list.pop()
+        helper(ans, [], 0, S)
+        return ans
