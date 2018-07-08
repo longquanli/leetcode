@@ -1,0 +1,15 @@
+Given a string, determine if a permutation of the string could form a palindrome.
+
+class Solution:
+    def canPermutePalindrome(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        memo = set()
+        for ch in s:
+            if ch in memo:
+                memo.remove(ch)
+            else:
+                memo.add(ch)
+        return not len(memo) > 1
