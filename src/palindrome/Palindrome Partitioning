@@ -1,0 +1,36 @@
+#Given a string s, partition s such that every substring of the partition is a palindrome.
+Return all possible palindrome partitioning of s.
+
+#Version I time 2^n space O(n)
+class Solution:
+    def partition(self, s):
+        """
+        :type s: str
+        :rtype: List[List[str]]
+        """
+        if not s:
+            return 
+        def isPalindrome(string):
+            start = 0
+            end = len(string) - 1
+            while start < end:
+                if string[start] != string[end]:
+                    return False
+                start += 1
+                end -= 1
+            return True
+        def helper(s, pos, tmp_list, ans):
+            if pos == len(s):
+                ans.append(copy.deepcopy(tmp_list))
+                return ans
+            for i in range(pos, len(s)):
+                string = s[pos: i + 1]
+                if isPalindrome(string):
+                    tmp_list.append(string)
+                    helper(s, i + 1, tmp_list, ans)
+                    tmp_list.pop()
+        ans = []
+        helper(s, 0, [], ans)
+        return ans
+ #Version II with memory cut brunches
+ 
