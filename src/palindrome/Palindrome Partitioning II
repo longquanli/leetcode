@@ -1,0 +1,43 @@
+
+
+Given a string s, partition s such that every substring of the partition is a palindrome.
+Return the minimum cuts needed for a palindrome partitioning of s.
+
+#Version I time exceed O(n^3)
+class Solution:
+    def minCut(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if not s:
+            return 0
+        isPalindrome = lambda s: s == s[::-1]
+        dp = [[[] for _ in range(len(s))] for _ in range(len(s))]
+        for i in range(len(s)):
+            if isPalindrome(s[:i+1]):
+                dp[0][i].append([s[:i+1]])
+            for j in range(i):
+                if dp[0][j] and isPalindrome(s[j+1:i+1]):
+                    string = s[j+1:i+1]
+                    for tmp in dp[0][j]:
+                        dp[0][i].append(tmp+[string])
+        ans = float('inf')
+        for tmp in dp[0][len(s) - 1]:
+            ans = min(ans, len(tmp) - 1)
+        return ans
+ #Version II time O(N^2) space O(n^2)
+ class Solution:
+    def minCut(self, s):
+        n = len(s)
+        f = [0] * (len(s) + 1)
+        p = [[False for x in range(n)] for x in range(n)]
+        #the worst case is cutting by each char
+        for i in range(n+1):
+            f[i] = n - i - 1 # the last one, f[n]=-1
+        for i in range(n - 1, -1, -1):
+            for j in range(i, n):
+                if (s[i] == s[j] and (j - i < 2 or p[i + 1][j - 1])):
+                    p[i][j] = True
+                    f[i] = min(f[i], f[j + 1] + 1)
+        return f[0]
