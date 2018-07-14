@@ -9,7 +9,7 @@ class Solution:
         :rtype: List[List[str]]
         """
         if not s:
-            return 
+            return [[]]
         def isPalindrome(string):
             start = 0
             end = len(string) - 1
