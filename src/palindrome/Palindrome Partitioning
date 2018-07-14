@@ -33,4 +33,33 @@ class Solution:
         helper(s, 0, [], ans)
         return ans
  #Version II with memory cut brunches
- 
+class Solution:
+    def partition(self, s):
+        """
+        :type s: str
+        :rtype: List[List[str]]
+        """
+        if not s:
+            return
+        isPalindrome = lambda s: s == s[::-1]
+        def helper(s, pos, memo):
+            if pos in memo:
+                return memo[pos]
+            if pos == len(s):
+                #important
+                return [[]]
+            curlist = []
+            for i in range(pos, len(s)):
+                string = s[pos:i + 1]
+                if isPalindrome(string):
+                    tmp_list = helper(s, i + 1, memo)
+                    for tmp in tmp_list:
+                        tmp2 = []
+                        tmp2.append(string)
+                        tmp2.extend(tmp)
+                        curlist.append(copy.deepcopy(tmp2))
+            memo[pos] = copy.deepcopy(curlist)
+            return curlist
+        memo = collections.defaultdict(list)
+        return helper(s, 0, memo)
+ #Version III
