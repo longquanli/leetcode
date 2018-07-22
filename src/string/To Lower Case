@@ -1,0 +1,15 @@
+
+Implement function ToLowerCase() that has a string parameter str, and returns the same string in lowercase.
+class Solution:
+    def toLowerCase(self, str):
+        """
+        :type str: str
+        :rtype: str
+        """
+        ans = []
+        for ch in str:
+            if 'Z'>= ch>= 'A':
+                ans.append(chr(ord(ch)-ord('A')+ord('a')))
+            else:
+                ans.append(ch)
+        return ''.join(ans)
