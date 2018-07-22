@@ -1,0 +1,41 @@
+We have a string S of lowercase letters, and an integer array shifts.
+Call the shift of a letter, the next letter in the alphabet, (wrapping around so that 'z' becomes 'a'). 
+For example, shift('a') = 'b', shift('t') = 'u', and shift('z') = 'a'.
+Now for each shifts[i] = x, we want to shift the first i+1 letters of S, x times.
+Return the final string after all such shifts to S are applied.
+
+#Version I Time O(n) Space O(n)
+class Solution:
+    def shiftingLetters(self, S, shifts):
+        """
+        :type S: str
+        :type shifts: List[int]
+        :rtype: str
+        """
+        sumvalue = [0] * len(shifts)
+        for i in range(len(shifts) - 1, -1, -1):
+            if i == len(shifts) - 1:
+                sumvalue[i] = shifts[i]
+            else:
+                sumvalue[i] = sumvalue[i + 1] + shifts[i]
+        ans = []
+        for i in range(len(S)):
+            tmp = ord(S[i]) -ord('a') + sumvalue[i]
+            ans.append(chr(tmp % 26 + ord('a')))
+        return ''.join(ans)
+        
+#Version II Time O(n) extra Space O(1)
+class Solution:
+    def shiftingLetters(self, S, shifts):
+        """
+        :type S: str
+        :type shifts: List[int]
+        :rtype: str
+        """
+        ans = []
+        X = sum(shifts)
+        for i, ch in enumerate(S):
+            index = (ord(ch) - ord('a') + X) % 26
+            ans.append(chr(index + ord('a')))
+            X = X - shifts[i]
+        return ''.join(ans)
