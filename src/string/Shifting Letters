@@ -24,7 +24,7 @@ class Solution:
             ans.append(chr(tmp % 26 + ord('a')))
         return ''.join(ans)
         
-#Version II Time O(n) extra Space O(1)
+#Version II Time O(n) extra Space O(n)
 class Solution:
     def shiftingLetters(self, S, shifts):
         """
