@@ -1,0 +1,42 @@
+Given a balanced parentheses string S, compute the score of the string based on the following rule:
+
+~()  has score 1
+~AB  has score A + B, where A and B are balanced parentheses strings.
+~(A) has score 2 * A, where A is a balanced parentheses string.
+
+#Version I Time(n^2) space (n)
+class Solution:
+    def scoreOfParentheses(self, S):
+        """
+        :type S: str
+        :rtype: int
+        """
+        def help(i, j):
+            ans = 0
+            count = 0
+            for k in range(i, j):
+                count += 1 if S[k] == '(' else -1
+                if count == 0:
+                    if k == i + 1:
+                        ans += 1
+                    else:
+                        ans += 2 * help(i + 1, k)
+                    i = k + 1
+            return ans
+        return help(0, len(S))
+#Version II using stack time O(n) space (n)
+class Solution:
+    def scoreOfParentheses(self, S):
+        """
+        :type S: str
+        :rtype: int
+        """
+        stack = [0]
+        for ch in S:
+            if ch == '(':
+                stack.append(0)
+            else:
+                tmp = stack.pop()
+                stack[-1] += max(tmp * 2, 1)
+        return stack.pop()
+
