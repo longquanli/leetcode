@@ -40,3 +40,35 @@ class Solution:
                     dp[i] = dp[i-1]+dp[i-dp[i-1]-2] + 2 if i-dp[i-1]-2>=0 else dp[i-1]+2
                 ans = max(dp[i], ans)
         return ans
+#Version III Time O(n) space O(1)
+class Solution:
+    def longestValidParentheses(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        left = 0
+        right = 0
+        ans = 0
+        for ch in s:
+            if ch == '(':
+                left += 1
+            else:
+                right +=1
+            if left == right:
+                ans = max(ans, left + right)
+            if right > left:
+                left = 0
+                right = 0
+        left, right = 0, 0
+        for i in range(len(s) - 1, -1, -1):
+            if s[i] == ')':
+                left += 1
+            else:
+                right += 1
+            if left == right:
+                ans = max(ans, left + right)
+            if right > left:
+                left = 0
+                right = 0
+        return ans
