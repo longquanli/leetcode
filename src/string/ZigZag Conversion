@@ -1,0 +1,17 @@
+#Time O(n) space O(n)
+class Solution:
+    def convert(self, s, numRows):
+        if numRows == 1:
+            return s
+        ans = []
+        step = numRows + numRows - 2
+        count = 0
+        for i in range(numRows):
+            interval = step - 2 * i
+            for j in range(i, len(s), step):
+                ans.append(s[j])
+                count += 1
+                if interval < step and interval > 0 and j + interval < len(s) and count < len(s):
+                    ans.append(s[j + interval])
+                    count += 1
+        return ''.join(ans)
