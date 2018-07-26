@@ -1,0 +1,24 @@
+Given a list of 24-hour clock time points in "Hour:Minutes" format, find the minimum minutes difference between 
+any two time points in the list.
+
+#Time O(n^3) time exceed
+class Solution:
+    def findMinDifference(self, timePoints):
+        """
+        :type timePoints: List[str]
+        :rtype: int
+        """
+        def check_two(string1, string2):
+            hour = int(string1[:2]) - int(string2[:2])
+            minuts = int(string1[3:]) - int(string2[3:])
+            if (hour > 0 and minuts > 0) or (hour < 0 and minuts < 0):
+                diff = abs(hour) * 60 + abs(minuts)
+            else:
+                diff = abs(hour) * 60 - abs(minuts)
+            ans = min(diff, 24 * 60 - diff)
+            return abs(ans)
+        ans = float('INF')
+        for i in range(len(timePoints) - 1):
+            for j in range(i + 1, len(timePoints)):
+                ans = min(ans, check_two(timePoints[i], timePoints[j]))
+        return ans
