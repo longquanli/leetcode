@@ -10,8 +10,7 @@ class Solution:
         :rtype: str
         """
         dictionary = sorted(zip(indexes, sources, targets), reverse=True)
-        S = list(S)
         for i, x, y in dictionary:
-            if i + len(x) <= len(S) and ''.join(S[i:i+len(x)]) == x:
-                S[i:i+len(x)] = list(y)
-        return ''.join(S)
+            if i + len(x) <= len(S) and S[i:i+len(x)] == x:
+                S = S[:i] + y + S[i + len(x):]
+        return S
