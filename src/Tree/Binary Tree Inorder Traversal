@@ -1,0 +1,37 @@
+#Version I recursion time O(n) space avr O(lgn) worst case O(n)
+class TreeNode:
+	def __init__(self, val):
+		self.val = val
+		self.left = None
+		self.right = None
+
+class Solution:
+	def inorderTraversal(self, root):
+		def helper(result, node):
+			if node is None:
+				return
+			helper(result, node.left)
+			result.append(node.val)
+			helper(result, node.right)
+		result = []
+		helper(result, root)
+		return result
+#Version II iteration
+class Solution:
+	def inorderTraversal(self, root):
+		stack = []
+		if root is None:
+			return []
+		result = []
+		while root:
+			stack.append(root)
+			root = root.left
+		while stack:
+			tmp = stack.pop()
+			result.append(tmp.val)
+			if tmp.right:
+				tmp = tmp.right
+				while tmp:
+					stack.append(tmp)
+					tmp = tmp.left
+		return result
