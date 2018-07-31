@@ -1,0 +1,40 @@
+#Recursion
+class Solution:
+    def preorderTraversal(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
+        def helper(root, result):
+            if root is None:
+                return
+            result.append(root.val)
+            helper(root.left, result)
+            helper(root.right, result)
+        result = []
+        helper(root, result)
+        return result
+#Iteration
+class Solution:
+    def preorderTraversal(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
+        result = []
+        if root is None:
+            return result
+        stack = []
+        while root:
+            result.append(root.val)
+            stack.append(root)
+            root = root.left
+        while stack:
+            tmp = stack.pop()
+            if tmp.right:
+                tmp = tmp.right
+                while tmp:
+                    result.append(tmp.val)
+                    stack.append(tmp)
+                    tmp = tmp.left
+        return result
